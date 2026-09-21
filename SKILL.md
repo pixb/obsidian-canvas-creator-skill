@@ -1,6 +1,16 @@
 ---
 name: obsidian-canvas-creator-skill
 description: Create Obsidian Canvas files from text content, supporting both MindMap and freeform layouts. Use this skill when users want to visualize content as an interactive canvas, create mind maps, or organize information spatially in Obsidian format.
+license: MIT
+activation: /obsidian-canvas-creator-skill
+metadata:
+  author: pix
+  version: 1.0.0
+  created: 2026-09-20
+  tags: [obsidian, canvas, mindmap, visualization]
+provenance:
+  maintainer: pix
+  source_references: [references/canvas-spec.md, references/layout-algorithms.md]
 ---
 
 # Obsidian Canvas Creator
@@ -196,14 +206,10 @@ Process:
 
 ## Reference Documents
 
-- **Canvas Specification**: `references/canvas-spec.md` - Complete JSON Canvas format specification
-- **Layout Algorithms**: `references/layout-algorithms.md` - Detailed positioning algorithms for both layout types
+Read these references for detailed information:
 
-Load these references when:
-
-- Need specification details for edge cases
-- Implementing complex layout calculations
-- Troubleshooting validation errors
+- Read `references/canvas-spec.md` for complete JSON Canvas format specification and edge cases
+- Read `references/layout-algorithms.md` for detailed positioning algorithms for both MindMap and freeform layouts
 
 ## Tips for Quality Canvases
 
@@ -222,3 +228,11 @@ Load these references when:
 - Too much text in nodes (use file nodes for long content)
 - Duplicate IDs (each must be unique)
 - Unconnected nodes (unless intentional islands)
+
+## Gotchas
+
+- Obsidian Canvas files require specific JSON structure with `nodes` and `edges` arrays only
+- Chinese quotes must be converted: double quotes → 『』, single quotes → 「」
+- Node IDs must be unique 8-12 character hex strings across entire canvas
+- Minimum spacing between nodes: 320px horizontal, 200px vertical
+- Z-index order matters: groups must come before text nodes for proper layering

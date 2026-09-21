@@ -1,0 +1,57 @@
+{
+  "question": "How to transform text content into structured Obsidian Canvas files with MindMap and freeform layouts?",
+  "trigger": ["User requests to create a canvas", "User wants to visualize content as mind map", "User mentions Obsidian Canvas or visual diagrams"],
+  "decision": ["Create a MindMap layout canvas", "Create a freeform layout canvas", "Choose appropriate node sizing and colors"],
+  "evidence": ["Text content to visualize", "User preference for layout type", "Canvas specification requirements"],
+  "success_measure": "Generated .canvas file opens correctly in Obsidian with proper node positioning and edge connections",
+  "outcome": "A valid JSON Canvas file (.canvas) ready for use in Obsidian",
+  "intended_users": ["Obsidian users", "Content creators", "Knowledge managers"],
+  "input_types": ["plain text", "markdown", "structured outlines", "articles"],
+  "output_artifacts": ["Obsidian Canvas file (.canvas)"],
+  "use_cases": ["mind mapping", "content visualization", "knowledge organization", "diagram creation"],
+  "examples": [
+    {
+      "invocation": "/obsidian-canvas-creator-skill Create a mind map about solar system planets",
+      "description": "Generate a radial mind map with planets as nodes"
+    },
+    {
+      "invocation": "/obsidian-canvas-creator-skill Turn this article into a canvas: [article text]",
+      "description": "Convert article structure into spatial canvas layout"
+    }
+  ],
+  "permissions_systems": ["Read local input files", "Write output .canvas file"],
+  "typical_completion_time": "1-3 minutes",
+  "compatibility": {
+    "declared": ["opencode"],
+    "certified": []
+  },
+  "environment": {
+    "documentation_sources": ["references/canvas-spec.md", "references/layout-algorithms.md"],
+    "data_sources": ["User-supplied text content"],
+    "required_capabilities": ["Generate valid JSON Canvas structure"],
+    "readiness_checks": ["Input content is provided and non-empty"]
+  },
+  "risk": {
+    "tier": "low",
+    "permissions": ["Read user-supplied text", "Write output canvas file"],
+    "mutation_boundary": "read-only",
+    "approval_required": []
+  },
+  "software_mutation": {
+    "applies": false
+  },
+  "data_interfaces": {
+    "applies": false
+  },
+  "semantic_recon": {
+    "applies": false
+  },
+  "semantic_contract": {
+    "applies": false
+  },
+  "routing_tests": {
+    "should_trigger": ["Create a mind map", "Make a canvas diagram", "Visualize this content", "Turn this into a mind map"],
+    "should_not_trigger": ["Edit an existing canvas", "Delete canvas files", "Run database queries"]
+  },
+  "support_tier": "supported"
+}
