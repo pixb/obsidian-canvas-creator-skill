@@ -1,39 +1,41 @@
-# Obsidian Canvas Creator Skill
+# obsidian-canvas-creator-skill
 
-## Purpose
+Create Obsidian Canvas files from text content, supporting both MindMap and
+freeform layouts. The user provides text, markdown, or structured content, and
+this skill generates a valid JSON Canvas file (.canvas) that can be opened
+directly in Obsidian.
 
-Transform text content into structured Obsidian Canvas files (.canvas) with support for MindMap and freeform layouts.
+## Activation
 
-## When to Use
+Invoke with `/obsidian-canvas-creator-skill <content description>`, or naturally:
 
-- Creating visual mind maps from text content
-- Organizing information spatially in Obsidian
-- Converting articles, notes, or outlines into interactive canvas files
-- Building diagrams with nodes and connections
+- "Create a mind map about solar system planets"
+- "Turn this article into a canvas"
+- "Visualize this project structure"
+- "Make a knowledge map about Python programming"
 
-## Input Format
+## How to use this file
 
-Accepts:
-- Plain text
-- Markdown content
-- Structured outlines
-- Articles with headings and sections
+This is the cross-tool companion file (AAIF format). The full skill
+instructions — workflows, algorithms, validation rules, and examples — live in
+[SKILL.md](SKILL.md) at this skill root. Read SKILL.md and follow it; treat
+this file as the pointer, not the instructions.
 
-## Output
+## What this skill produces
 
-Generates valid JSON Canvas files (.canvas) that can be opened directly in Obsidian.
+This skill generates valid JSON Canvas files (.canvas) with:
+- Properly positioned nodes (text, file, link, group types)
+- Valid edge connections between nodes
+- Correct z-index ordering (groups before content)
+- Consistent color schemes (preset or custom hex)
+- Chinese quote escaping (『』 and 「」)
+- Minimum spacing requirements (320px horizontal, 200px vertical)
 
 ## Key Files
 
-- `SKILL.md` - Main skill instructions
-- `references/canvas-spec.md` - JSON Canvas format specification
-- `references/layout-algorithms.md` - Positioning algorithms for layouts
-- `assets/` - Template canvas files
-
-## Workflow
-
-1. Analyze input content structure
-2. Choose layout type (MindMap or Freeform)
-3. Plan node hierarchy and connections
-4. Generate JSON with proper positioning
-5. Validate and output .canvas file
+- `SKILL.md` - Main skill instructions, workflows, and algorithms
+- `references/canvas-spec.md` - Complete JSON Canvas format specification
+- `references/layout-algorithms.md` - Positioning algorithms for MindMap and freeform layouts
+- `assets/template-*.canvas` - Example canvas files for reference
+- `README.md` - Installation and usage instructions
+- `discovery.json` - Skill metadata and routing configuration

@@ -7,7 +7,9 @@ metadata:
   author: pix
   version: 1.0.0
   created: 2026-09-20
-  tags: [obsidian, canvas, mindmap, visualization]
+  last_reviewed: 2026-09-21
+  review_interval_days: 90
+  tags: [obsidian, canvas, mindmap, visualization, json, canvas-file]
 provenance:
   maintainer: pix
   source_references: [references/canvas-spec.md, references/layout-algorithms.md]
@@ -23,6 +25,29 @@ Transform text content into structured Obsidian Canvas files with support for Mi
 - User wants to organize information spatially
 - User mentions "Obsidian Canvas" or similar visualization tools
 - Converting structured content (articles, notes, outlines) into visual format
+
+## Data Source
+
+This skill operates on user-provided text content. No external APIs or data sources are required.
+
+### Input Types
+
+- **Plain Text**: Raw text content to visualize
+- **Markdown Content**: Structured with headings, lists, emphasis
+- **Structured Outlines**: Hierarchical bullet points or numbered lists
+- **Articles**: Full documents with sections and subsections
+
+### Data Flow
+
+1. User provides text content
+2. Skill analyzes content structure
+3. Skill determines layout type (MindMap or Freeform)
+4. Skill generates JSON Canvas structure
+5. Output is a valid `.canvas` file
+
+### No External Dependencies
+
+This skill uses only Python standard library. No API keys, network access, or external services required.
 
 ## Core Workflow
 
@@ -180,23 +205,58 @@ Use for brand consistency or specific themes. Always use uppercase format: `"#4A
 
 ## Examples
 
-### Simple MindMap Request
+### Example 1: Simple MindMap Request
 
 User: "Create a mind map about solar system planets"
 
-Process:
+**Process:**
 
-1. Identify center: "Solar System"
-2. Primary branches: Inner Planets, Outer Planets, Dwarf Planets
-3. Secondary nodes: Individual planets with key facts
-4. Apply radial layout
-5. Generate JSON with proper spacing
+1. Analyze content: Solar system has planets, dwarf planets, moons
+2. Determine layout: MindMap (hierarchical structure)
+3. Identify center: "Solar System"
+4. Primary branches: Inner Planets, Outer Planets, Dwarf Planets
+5. Secondary nodes: Individual planets with key facts
+6. Apply radial layout with 400px radius
+7. Generate JSON with proper spacing
 
-### Freeform Content Request
+**Output Structure:**
+```json
+{
+  "nodes": [
+    {"id": "center", "type": "text", "text": "# Solar System", "x": -150, "y": -60, "width": 300, "height": 120},
+    {"id": "inner", "type": "text", "text": "Inner Planets", "x": 400, "y": -200, "width": 200, "height": 80},
+    {"id": "outer", "type": "text", "text": "Outer Planets", "x": 400, "y": 200, "width": 200, "height": 80}
+  ],
+  "edges": [
+    {"id": "e1", "fromNode": "center", "toNode": "inner", "toEnd": "arrow"},
+    {"id": "e2", "fromNode": "center", "toNode": "outer", "toEnd": "arrow"}
+  ]
+}
+```
+
+### Example 2: Freeform Content Request
 
 User: "Turn this article into a canvas" + [article text]
 
-Process:
+**Input:**
+```
+# Machine Learning Basics
+
+## Supervised Learning
+- Classification
+- Regression
+
+## Unsupervised Learning
+- Clustering
+- Dimensionality Reduction
+
+## Deep Learning
+- Neural Networks
+- CNNs
+- RNNs
+```
+
+**Process:**
 
 1. Extract article structure (intro, body sections, conclusion)
 2. Identify key concepts and relationships
@@ -204,12 +264,155 @@ Process:
 4. Connect with labeled edges
 5. Apply freeform layout with clear zones
 
+**Output Structure:**
+- Central "Machine Learning" node
+- Three main groups: Supervised, Unsupervised, Deep Learning
+- Individual technique nodes within each group
+- Connections showing relationships
+
+### Example 3: Project Structure Visualization
+
+User: "Visualize our project structure: Frontend (React, TypeScript, Tailwind), Backend (Node.js, Express, PostgreSQL), DevOps (Docker, GitHub Actions, AWS)"
+
+**Process:**
+
+1. Analyze content: Three main layers with technologies
+2. Determine layout: Freeform with groups
+3. Create three main groups for each layer
+4. Add technology nodes within each group
+5. Show dependencies with edges
+
+**Output Structure:**
+```json
+{
+  "nodes": [
+    {"id": "frontend", "type": "group", "label": "Frontend", "x": 0, "y": 0, "width": 300, "height": 200},
+    {"id": "react", "type": "text", "text": "React", "x": 20, "y": 40, "width": 120, "height": 60},
+    {"id": "typescript", "type": "text", "text": "TypeScript", "x": 160, "y": 40, "width": 120, "height": 60}
+  ],
+  "edges": [
+    {"id": "e1", "fromNode": "react", "toNode": "typescript", "label": "uses"}
+  ]
+}
+```
+
+### Example 4: Meeting Notes Canvas
+
+User: "Create a canvas from these meeting notes: Q1 Results (Revenue up 15%, Costs down 8%), Q2 Goals (Launch new feature, Hire 3 engineers), Action Items (Design review by Friday, API docs by next week)"
+
+**Process:**
+
+1. Analyze content: Three sections with items
+2. Determine layout: Freeform with timeline or grouped
+3. Create groups for each section
+4. Color-code by priority
+5. Connect related items
+
+**Output Structure:**
+- Timeline layout from left to right
+- Q1, Q2, and Action Items as main nodes
+- Individual items as child nodes
+- Edges showing dependencies
+
+### Example 5: Knowledge Map Creation
+
+User: "Make a knowledge map about Python programming: Core (Variables, Control Flow, Functions), OOP (Classes, Inheritance, Polymorphism), Libraries (NumPy, Pandas, Matplotlib)"
+
+**Process:**
+
+1. Analyze content: Three main areas with subtopics
+2. Determine layout: MindMap (hierarchical)
+3. Create central "Python Programming" node
+4. Add three main branches
+5. Position specific library nodes with descriptions
+
+**Output Structure:**
+```json
+{
+  "nodes": [
+    {"id": "python", "type": "text", "text": "# Python Programming", "x": -150, "y": -60, "width": 300, "height": 120, "color": "4"},
+    {"id": "core", "type": "text", "text": "Core Concepts", "x": 400, "y": -200, "width": 200, "height": 80, "color": "5"},
+    {"id": "oop", "type": "text", "text": "OOP", "x": 400, "y": 0, "width": 200, "height": 80, "color": "6"},
+    {"id": "libs", "type": "text", "text": "Libraries", "x": 400, "y": 200, "width": 200, "height": 80, "color": "3"}
+  ],
+  "edges": [
+    {"id": "e1", "fromNode": "python", "toNode": "core", "toEnd": "arrow"},
+    {"id": "e2", "fromNode": "python", "toNode": "oop", "toEnd": "arrow"},
+    {"id": "e3", "fromNode": "python", "toNode": "libs", "toEnd": "arrow"}
+  ]
+}
+```
+
+### Example 6: Process Flow Diagram
+
+User: "Create a flowchart for user registration: Start → Enter Email → Validate Email → Create Account → Send Welcome Email → End"
+
+**Process:**
+
+1. Analyze content: Linear process with steps
+2. Determine layout: Timeline or tree layout
+3. Create sequential nodes
+4. Connect with directional edges
+5. Add decision points if needed
+
+**Output Structure:**
+- Horizontal timeline layout
+- Each step as a node
+- Arrows showing flow direction
+- Color coding for different types of steps
+
 ## Reference Documents
 
 Read these references for detailed information:
 
 - Read `references/canvas-spec.md` for complete JSON Canvas format specification and edge cases
 - Read `references/layout-algorithms.md` for detailed positioning algorithms for both MindMap and freeform layouts
+
+## Scripts
+
+This skill does not require external scripts. All canvas generation logic is handled directly by the agent using the algorithms and specifications provided in the reference documents.
+
+### Validation Commands
+
+For manual validation of generated canvas files:
+
+```bash
+# Validate JSON syntax
+python3 -c "import json; json.load(open('output.canvas'))"
+
+# Check node ID uniqueness
+python3 -c "
+import json
+data = json.load(open('output.canvas'))
+ids = [n['id'] for n in data.get('nodes', [])]
+ids += [e['id'] for e in data.get('edges', [])]
+print('All IDs unique:', len(ids) == len(set(ids)))
+"
+```
+
+## Analyses
+
+For detailed content analysis methods and canvas generation analysis, read
+`references/analysis-and-errors.md`. This includes:
+
+- Structure detection and hierarchy extraction
+- Layout recommendation algorithms
+- Node sizing and color assignment
+- Edge routing and quality metrics
+
+## Errors
+
+For comprehensive error handling and prevention procedures, read
+`references/analysis-and-errors.md`. This includes:
+
+- Common errors and solutions
+- Error prevention strategies
+- Validation steps
+- Quality metrics
+
+## Keywords
+
+obsidian, canvas, mindmap, visualization, json, canvas-file, diagram, spatial-organization, knowledge-management, note-taking, visual-thinking, concept-mapping, flowchart, network-diagram, hierarchical-structure, radial-layout, freeform-layout, node-positioning, edge-connection, color-coding, grouping, z-index, collision-detection, spacing-algorithm, content-analysis, structure-extraction
 
 ## Tips for Quality Canvases
 

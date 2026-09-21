@@ -1,0 +1,2 @@
+# No external dependencies required — this skill uses Python stdlib only.
+# This skill generates JSON Canvas files directly without external libraries.
